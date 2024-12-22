@@ -7,19 +7,21 @@ package "Монолит" {
 }
 
 actor User as "Пользователь"
+actor ExternalSystem as "Внешняя система"
 
 package "Пользовательский интерфейс" {
   component MobileApp as "Мобильное приложение"
   component WebApp as "Веб-приложение"
 }
 
-User --> MobileApp : "Взаимодействие через мобильное приложение"
-User --> WebApp : "Взаимодействие через веб-приложение"
+User --> MobileApp : "Взаимодействие через мобильное приложение (REST)"
+User --> WebApp : "Взаимодействие через веб-приложение (REST)"
 
-MobileApp --> DeviceManagement : "Запросы на управление устройствами"
-WebApp --> DeviceManagement : "Запросы на управление устройствами"
+MobileApp --> DeviceManagement : "Запросы на управление устройствами (REST)"
+WebApp --> DeviceManagement : "Запросы на управление устройствами (REST)"
 
-DeviceManagement --> Telemetry : "Запрос данных телеметрии"
-DeviceManagement --> TemperatureRegulation : "Команды регулирования"
+DeviceManagement --> Telemetry : "Запрос данных телеметрии (gRPC)"
+DeviceManagement --> TemperatureRegulation : "Команды регулирования (gRPC)"
+DeviceManagement --> ExternalSystem : "Интеграция с внешними системами (Kafka/Webhooks)"
 
 @enduml
