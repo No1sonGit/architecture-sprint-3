@@ -1,27 +1,34 @@
+
 @startuml
 
 package "Device Management Service" {
 
   rectangle "API Layer" {
-    component DeviceAPI
+    component DeviceManagementAPI
+    component TelemetryAPI
   }
 
   rectangle "Logic Layer" {
     component CommandHandler
     component DeviceStateManager
+    component TelemetryManager
   }
 
   rectangle "Integration Layer" {
     component EventPublisher
     component DeviceManagementDB
+    component TelemetryDB
   }
 
 }
 
-DeviceAPI -down-> CommandHandler : "Запрос на включение/выключение устройства"
+DeviceManagementAPI -down-> CommandHandler : "Запрос на управление устройствами"
 CommandHandler -down-> DeviceStateManager : "Изменение состояния устройства"
 DeviceStateManager -down-> DeviceManagementDB : "Обновление состояния устройства в БД"
-DeviceStateManager -right-> EventPublisher : "Публикация события об изменении состояния"
+DeviceStateManager -right-> EventPublisher : "Публикация события изменения состояния"
 EventPublisher -right-> Kafka : "Отправка события в кафку"
+
+TelemetryAPI -down-> TelemetryManager : "Запрос данных телеметрии"
+TelemetryManager -down-> TelemetryDB : "Получение данных телеметрии"
 
 @enduml

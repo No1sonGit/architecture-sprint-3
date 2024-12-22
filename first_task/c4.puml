@@ -1,25 +1,25 @@
 @startuml
-!define RECTANGLE class
 
-RECTANGLE System as "Монолит" {
-  RECTANGLE DeviceManagement as "Управление устройствами"
-  RECTANGLE TemperatureMonitoring as "Мониторинг температуры"
-  RECTANGLE TemperatureRegulation as "Регулирование температуры"
-  RECTANGLE UserInterface as "Пользовательский интерфейс"
+package "Монолит" {
+  component DeviceManagement as "Управление устройствами"
+  component Telemetry as "Телеметрия"
+  component TemperatureRegulation as "Регулирование температуры"
 }
 
-User --> UserInterface : "Удалённое управление температурой"
-UserInterface --> DeviceManagement : "Команды на управление температурой"
-UserInterface --> TemperatureMonitoring : "Запрос текущей температуры"
-TemperatureMonitoring --> DeviceManagement : "Данные о текущей температуре"
-TemperatureMonitoring --> TemperatureSensors : "Данные с датчиков"
+actor User as "Пользователь"
 
-DeviceManagement --> TemperatureRegulation : "Заданная температура"
-TemperatureRegulation --> DeviceManagement : "Регулировка температуры"
-
-rectangle TemperatureSensors as "Датчики температуры" {
+package "Пользовательский интерфейс" {
+  component MobileApp as "Мобильное приложение"
+  component WebApp as "Веб-приложение"
 }
 
-TemperatureSensors --> TemperatureMonitoring : "Текущие данные о температуре"
+User --> MobileApp : "Взаимодействие через мобильное приложение"
+User --> WebApp : "Взаимодействие через веб-приложение"
+
+MobileApp --> DeviceManagement : "Запросы на управление устройствами"
+WebApp --> DeviceManagement : "Запросы на управление устройствами"
+
+DeviceManagement --> Telemetry : "Запрос данных телеметрии"
+DeviceManagement --> TemperatureRegulation : "Команды регулирования"
 
 @enduml

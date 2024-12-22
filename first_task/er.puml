@@ -29,7 +29,15 @@ entity "Device" as device {
   type_id : bigint
   house_id : bigint
   serial_number : String
-  status : String
+  status : DeviceStatus
+}
+
+enum DeviceStatus {
+  OFF
+  ON
+  STANDBY
+  MAINTENANCE
+
   firmware_version : String
   last_communication : timestamp
   created_at : timestamp
@@ -54,7 +62,15 @@ entity "Module" as module {
   device_id : bigint
   name : String
   version : String
-  status : String
+  status : DeviceStatus
+}
+
+enum DeviceStatus {
+  OFF
+  ON
+  STANDBY
+  MAINTENANCE
+
   created_at : timestamp
   updated_at : timestamp
 }
@@ -92,7 +108,15 @@ entity "Notification" as notification {
   user_id : bigint
   event_id : bigint
   message : String
-  status : String
+  status : DeviceStatus
+}
+
+enum DeviceStatus {
+  OFF
+  ON
+  STANDBY
+  MAINTENANCE
+
   created_at : timestamp
 }
 
